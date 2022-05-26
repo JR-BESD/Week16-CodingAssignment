@@ -2,6 +2,8 @@ package com.promineotech.jeep.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -44,7 +46,34 @@ class FetchJeepTest {
 				new ParameterizedTypeReference<>() {
 				});
 
-		// Then:a success (OK - 200) status code is returned
+		// Then: a success (OK - 200) status code is returned
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		
+		//AND: the actual list returned is the same as the expected list
+		List<Jeep> expected = buildExpected();
+		assertThat(response.getBody()).isEqualTo(expected);
+	}
+
+	protected List<Jeep> buildExpected() {
+		List<Jeep> expectedList = new LinkedList<>();
+		
+		//@formatter:off
+		expectedList.add(Jeep.builder()
+				.modelId(JeepModel.WRANGLER)
+				.trimLevel("Sport")
+				.numDoors(2)
+				.wheelSize(17)
+				.basePrice(new BigDecimal("28475.00"))
+				.build());
+		
+		expectedList.add(Jeep.builder()
+				.modelId(JeepModel.WRANGLER)
+				.trimLevel("Sport")
+				.numDoors(4)
+				.wheelSize(17)
+				.basePrice(new BigDecimal("31975.00"))
+				.build());
+		//@formatter:on
+		return expectedList;
 	}
 }
