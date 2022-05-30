@@ -26,7 +26,7 @@ import com.promineotech.jeep.entity.JeepModel;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Sql(scripts = { "classpath:flyway/migrations/V1.0__Jeep_Schema.sql",
-		"classpath:flyway/migrations/V1.1__Jeep_data.sql" }, config = @SqlConfig(encoding = "utf-8"))
+		"classpath:flyway/migrations/V1.0__Jeep_data.sql" }, config = @SqlConfig(encoding = "utf-8"))
 class FetchJeepTest {
 	@Autowired
 	private TestRestTemplate restTemplate;
@@ -50,8 +50,10 @@ class FetchJeepTest {
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		
 		//AND: the actual list returned is the same as the expected list
+		List<Jeep> actual = response.getBody();
 		List<Jeep> expected = buildExpected();
-		assertThat(response.getBody()).isEqualTo(expected);
+				
+		assertThat(actual).isEqualTo(expected);
 	}
 
 	protected List<Jeep> buildExpected() {
